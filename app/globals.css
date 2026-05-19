@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* ---------- COLORS ---------- */
+  --color-primary: #003D9B;
+  --color-primary-container: #0052CC;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-surface-highest: #D7E2FF;
+  --color-button-text:#43465499;
+  --color-surface-low: #F1F3FF;
+  --color-background: #F9F9FF;
+  --color-error-field: #FFDAD6;
+  --color-special-feild: #F1F3FF80;
+  --color-text: #DBEAFE;
+  --color-hover: #F8FAFF;
+   --color-border-light:#E5E7EB;
+  --color-forms-texts: #434654;
+  --color-slate-dark-blue: #041B3C;
+  --color-slate-medium-blue: #4F5F7B;
+  --color-slate-light-blue: #C3C6D6;
+  --color-grey-task:#73768566;
+  --color-muted: #9CA3AF;
+  --color-circular:#CDDDFF;
+  --color-date:#041B3CB2;
+  --color-border: #C7D2E8;
+  --color-success: #82F9BE;
+  --color-error: #BA1A1A;
+  --color-warning: #FFB300;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* ---------- TYPOGRAPHY ---------- */
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --display-lg-size: 56px;
+  --display-lg-weight: 700;
+
+  --headline-lg-size: 32px;
+  --headline-lg-weight: 600;
+
+  --title-md-size: 18px;
+  --title-md-weight: 500;
+
+  --body-md-size: 14px;
+  --body-md-weight: 400;
+
+  --label-sm-size: 11px;
+   --label-xsm-size: 10px;
+  --label-sm-weight: 700;
+  --label-speical-size: 13px;   /* note: typo in original (special) */
+
+  /* ---------- SPACING ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* ---------- RADIUS ---------- */
+  --radius-button: 2px;
+  --radius-inputs: 4px;
+  --radius-form: 8px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+
+}
+
+.error-message{
+    font-size: var(--label-sm-size);
+    font-weight: var(--body-md-weight);
+    color: var(--color-error) !important;
+    line-height: 16.5px;
+}
+.error-label{
+      color: var(--color-error) !important;
+}
+button{
+  cursor: pointer;
+}
+.logo-name{
+  color: var(--color-slate-dark-blue);
+  font-size: 20px;
+  font-weight: var(--display-lg-weight);
+  line-height: 28px;
+  letter-spacing: -0.5px;
+}
+.special-style {
+  background-color: var(--color-special-feild);
+  border: 1px solid #c3c6d64d;
+}
+.hide-date-icon::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.hide-date-icon {
+  appearance: none;
+  -webkit-appearance: none;
 }
