@@ -5,7 +5,6 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { ShowPassword, HidePassword,LockIcon,CheckedIcon } from "@/components/ui/SvgIcons";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useForm, useWatch } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
