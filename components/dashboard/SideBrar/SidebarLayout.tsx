@@ -7,6 +7,7 @@ import SidebarBottom from "./SidebarBottom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "@/app/store/reduxHooks";
 import Cookies from "js-cookie";
+import Header from "@/components/common/Header/Header";
 import { logout } from "@/lib/api/auth";
 import { closeSidebar, openSidebar } from "@/app/store/slices/ui/sliderSlice";
 import {
@@ -132,7 +133,14 @@ export default function SidebarLayout({ children }: Props) {
         <div className="flex items-center gap-2.5 mb-6 pl-1">
           {!collapsed && (
             <>
-              <Image src="/logo.svg" alt="logo" width={32} height={32} />
+              <Image
+                src="/logo.svg"
+                alt="logo"
+                width={32}
+                height={32}
+                className="object-contain"
+                style={{ width: "auto", height: "auto" }}
+              />
               <span className="logo-name">TASKLY</span>
             </>
           )}
@@ -224,6 +232,8 @@ export default function SidebarLayout({ children }: Props) {
             <span className="logo-name px-2">TASKLY</span>
           </button>
         )}
+
+        <Header />
 
         {children}
       </div>

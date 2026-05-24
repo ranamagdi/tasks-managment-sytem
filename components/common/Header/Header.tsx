@@ -1,3 +1,5 @@
+'use client';
+
 import Cookies from "js-cookie";
 import { getInitials } from "../../../lib/utils/nameUtils";
 import { useAppSelector } from "@/app/store/reduxHooks";
@@ -23,11 +25,12 @@ const Header = () => {
           {showLogo && (
             <a href="#" className="flex items-center gap-2">
               <Image
-                src='/logo.svg'
+                src="/logo.svg"
                 alt="Your Company"
                 width={32}
                 height={32}
                 className="object-contain"
+                style={{ width: "auto", height: "auto" }}
               />
 
               <span className="logo-name">TASKLY</span>

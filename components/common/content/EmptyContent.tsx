@@ -24,6 +24,7 @@ const EmptyContent = ({
             src={image}
             alt="empty"
             className="w-60 h-auto mb-6 object-contain"
+            style={{ height: "auto" }}
           />
         </div>
       )}

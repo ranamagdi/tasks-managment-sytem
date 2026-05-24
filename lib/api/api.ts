@@ -9,14 +9,17 @@ const getToken = () => Cookies.get("access_token");
 const refreshToken = async () => {
   const refresh = Cookies.get("refresh_token");
 
-  const res = await fetch(`${BASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: process.env.NEXT_PUBLIC_API_KEY!,
+  const res = await fetch(
+    `${BASE_URL}/auth/v1/token?grant_type=refresh_token`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: process.env.NEXT_PUBLIC_API_KEY!,
+      },
+      body: JSON.stringify({ refresh_token: refresh }),
     },
-    body: JSON.stringify({ refresh_token: refresh }),
-  });
+  );
 
   const data = await res.json();
 
@@ -33,9 +36,20 @@ export interface CustomRequestInit extends RequestInit {
 const request = async <T>(
   url: string,
   options: CustomRequestInit = {},
-  retry = true
+  retry = true,
 ): Promise<T> => {
   const token = getToken();
+
+  const parseResponse = async (response: Response) => {
+    const text = await response.text();
+    if (!text) return null as unknown as T;
+
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      return text as unknown as T;
+    }
+  };
 
   const res = await fetch(`${BASE_URL}${url}`, {
     ...options,
@@ -61,7 +75,7 @@ const request = async <T>(
         },
       });
 
-      return retryRes.json();
+      return parseResponse(retryRes);
     } catch {
       Cookies.remove("access_token");
       Cookies.remove("refresh_token");
@@ -71,26 +85,42 @@ const request = async <T>(
   }
 
   if (options.returnHeaders) {
-    const data = await res.json();
+    const data = await parseResponse(res);
     return { data, headers: res.headers } as unknown as T;
   }
 
-  return res.json();
+  return parseResponse(res);
 };
 
 export const api = {
   get: <T = unknown>(url: string, options?: CustomRequestInit) =>
     request<T>(url, { ...options, method: "GET" }),
 
-  post: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
+  post: <T = unknown>(
+    url: string,
+    data?: unknown,
+    options?: CustomRequestInit,
+  ) =>
     request<T>(url, { ...options, method: "POST", body: JSON.stringify(data) }),
 
-  put: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
+  put: <T = unknown>(
+    url: string,
+    data?: unknown,
+    options?: CustomRequestInit,
+  ) =>
     request<T>(url, { ...options, method: "PUT", body: JSON.stringify(data) }),
 
-  patch: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
-    request<T>(url, { ...options, method: "PATCH", body: JSON.stringify(data) }),
+  patch: <T = unknown>(
+    url: string,
+    data?: unknown,
+    options?: CustomRequestInit,
+  ) =>
+    request<T>(url, {
+      ...options,
+      method: "PATCH",
+      body: JSON.stringify(data),
+    }),
 
   delete: <T = unknown>(url: string, options?: CustomRequestInit) =>
     request<T>(url, { ...options, method: "DELETE" }),
-}
+};

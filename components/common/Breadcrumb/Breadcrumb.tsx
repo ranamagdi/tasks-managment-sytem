@@ -1,65 +1,65 @@
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import { useAppSelector } from "../../../hooks/reduxHooks";
+"use client";
+
+import Link from "next/link";
+import { usePathname, useParams } from "next/navigation";
+import { useAppSelector } from "../../../app/store/reduxHooks";
 
 export default function Breadcrumb() {
-  const location = useLocation();
-  const { projectId } = useParams<{ projectId: string }>();
+  const pathname = usePathname();
+  const params = useParams();
+
+  const projectId = params?.projectId as string;
+
   const { projectTitle } = useAppSelector((s) => s.project);
 
-  const segments = location.pathname.split("/").filter(Boolean);
-
-  const basePath = "/dashboard/projects";
+  const segments = pathname.split("/").filter(Boolean);
 
   const routesMap: Record<string, string> = {
+    dashboard: "Dashboard",
     projects: "Projects",
+    project: "Project",
     edit: "Edit",
     epics: "Epics",
     members: "Members",
     add: "Add",
   };
-  const isEditPage = location.pathname.includes("/edit");
+
+  const isEditPage = pathname.includes("/edit");
+
   return (
-    <div className="text-sm md:flex items-center gap-2 mt-5 hidden">
-      <NavLink
-        to={basePath}
-        className="text-(--color-forms-texts) text-[12px] font-semibold uppercase cursor-pointer hover:text-(--color-primary)"
-      >
-        Projects
-      </NavLink>
+    <div className="hidden mt-5 items-center gap-2 text-sm md:flex">
+      {segments.map((segment, index) => {
+        // hide projectId from breadcrumb
+        if (segment === projectId) return null;
 
-      {projectId && !isEditPage && (
-        <>
-          <span>/</span>
+        const to = "/" + segments.slice(0, index + 1).join("/");
 
-          <NavLink
-            to={`/dashboard/project/${projectId}/edit`}
-            className="text-(--color-forms-texts) text-[12px] font-semibold uppercase cursor-pointer hover:text-(--color-primary)"
-          >
-            {projectTitle ?? "Project"}
-          </NavLink>
-        </>
-      )}
-      {segments.slice(3).map((segment, index) => {
-        const to = "/" + segments.slice(0, index + 4).join("/");
+        const isLast = index === segments.length - 1;
 
-        const label = routesMap[segment] || segment;
+        let label = routesMap[segment] || segment;
 
-        const isLast = index === segments.slice(3).length - 1;
+        if (
+          segment === "project" &&
+          projectTitle &&
+          !isEditPage
+        ) {
+          label = projectTitle;
+        }
 
         return (
-          <div key={to} className="flex gap-2">
-            <span>/</span>
+          <div key={to} className="flex items-center gap-2">
+            {index !== 0 && <span>/</span>}
 
-            <NavLink
-              to={to}
-              className={() =>
-                 isLast
-                  ? "text-(--color-primary) font-bold uppercase  text-[12px]"
-                  : "text-(--color-forms-texts) font-semibold uppercase hover:text-(--color-primary)  text-[12px]"
+            <Link
+              href={to}
+              className={
+                isLast
+                  ? "text-(--color-primary) text-[12px] font-bold uppercase"
+                  : "text-(--color-forms-texts) text-[12px] font-semibold uppercase hover:text-(--color-primary)"
               }
             >
               {label}
-            </NavLink>
+            </Link>
           </div>
         );
       })}
