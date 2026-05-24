@@ -2,7 +2,13 @@
 
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { ShowPassword, HidePassword,MilgreyIcon,LockIcon, ArrowIcon } from "@/components/ui/SvgIcons";
+import {
+  ShowPassword,
+  HidePassword,
+  MilgreyIcon,
+  LockIcon,
+  ArrowIcon,
+} from "@/components/ui/SvgIcons";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
@@ -19,6 +25,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [remember, setRemember] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const isProduction = process.env.NODE_ENV === "production";
 
   const loginSchema = z.object({
     email: z.email("Invalid email address").nonempty("Email is required"),
@@ -51,10 +58,13 @@ const Login = () => {
       const response = await login(data.email, data.password);
       const { access_token, refresh_token, expires_at } = response;
 
+      const accessTokenExpires =
+        expires_at > 1e12 ? new Date(expires_at) : new Date(expires_at * 1000);
+
       Cookies.set("access_token", access_token, {
-        expires: new Date(expires_at),
+        expires: accessTokenExpires,
         path: "/",
-        secure: true,
+        secure: isProduction,
         sameSite: "lax",
       });
 
@@ -62,7 +72,7 @@ const Login = () => {
         Cookies.set("refresh_token", refresh_token, {
           expires: 30,
           path: "/",
-          secure: true,
+          secure: isProduction,
           sameSite: "lax",
         });
       }
@@ -261,9 +271,8 @@ const Login = () => {
             disabled={isSubmitting}
           >
             {isSubmitting ? "Signing in..." : "Sign In"}
-           
-           <ArrowIcon/>
-           
+
+            <ArrowIcon />
           </Button>
         </form>
 

@@ -1,9 +1,13 @@
 "use client";
 
-
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { ShowPassword, HidePassword,LockIcon,CheckedIcon } from "@/components/ui/SvgIcons";
+import {
+  ShowPassword,
+  HidePassword,
+  LockIcon,
+  CheckedIcon,
+} from "@/components/ui/SvgIcons";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
@@ -80,6 +84,8 @@ const Signup = () => {
     hasSpecial: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
   };
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   const handleSubmitForm: SubmitHandler<FormData> = async (data) => {
     try {
       const response = await signUp({
@@ -92,17 +98,19 @@ const Signup = () => {
       });
 
       const { access_token, refresh_token, expires_at } = response;
+      const accessTokenExpires =
+        expires_at > 1e12 ? new Date(expires_at) : new Date(expires_at * 1000);
 
       Cookies.set("access_token", access_token, {
-        expires: new Date(expires_at),
+        expires: accessTokenExpires,
         path: "/",
-        secure: true,
+        secure: isProduction,
         sameSite: "lax",
       });
 
       Cookies.set("refresh_token", refresh_token, {
         path: "/",
-        secure: true,
+        secure: isProduction,
         sameSite: "lax",
       });
 
@@ -280,7 +288,9 @@ const Signup = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="error-message">{errors.confirmPassword.message}</p>
+                <p className="error-message">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
           </div>
@@ -291,22 +301,29 @@ const Signup = () => {
               bg-(--color-surface-highest) gap-3"
           >
             {[
-              { passed: passwordChecks.minLength, label: "At least 8 characters" },
+              {
+                passed: passwordChecks.minLength,
+                label: "At least 8 characters",
+              },
               {
                 passed: passwordChecks.hasUpperLower && passwordChecks.hasDigit,
                 label: "One uppercase, lowercase, and digit",
               },
-              { passed: passwordChecks.hasSpecial, label: "One special character" },
+              {
+                passed: passwordChecks.hasSpecial,
+                label: "One special character",
+              },
             ].map(({ passed, label }) => (
-              <label key={label} className="flex items-center gap-2 cursor-pointer">
+              <label
+                key={label}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 <div
                   className={`w-3 h-3 rounded-full flex items-center justify-center transition-colors ${
                     passed ? "bg-primary" : "border-gray-300 border-2"
                   }`}
                 >
-                  {passed && (
-                   <CheckedIcon />
-                  )}
+                  {passed && <CheckedIcon />}
                 </div>
                 <p
                   className={`text-(length:--label-sm-size) font-(--body-md-weight)

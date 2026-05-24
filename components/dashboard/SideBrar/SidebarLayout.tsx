@@ -132,9 +132,7 @@ export default function SidebarLayout({ children }: Props) {
         <div className="flex items-center gap-2.5 mb-6 pl-1">
           {!collapsed && (
             <>
-              <Link href="#">
-                <Image src="/favicon.svg" alt="logo" width={32} height={32} />
-              </Link>
+              <Image src="/logo.svg" alt="logo" width={32} height={32} />
               <span className="logo-name">TASKLY</span>
             </>
           )}

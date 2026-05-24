@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 import { getInitials } from "../../../lib/utils/nameUtils";
 import { useAppSelector } from "@/app/store/reduxHooks";
-import Logo from "../../../public/logo.svg";
 import Image from "next/image";
 import useIsMobile from "../../../lib/hooks/useIsMobile";
 import { useUserQuery } from "../../../lib/hooks/queries/useUserQuery";
@@ -24,7 +23,7 @@ const Header = () => {
           {showLogo && (
             <a href="#" className="flex items-center gap-2">
               <Image
-                src={Logo}
+                src='/logo.svg'
                 alt="Your Company"
                 width={32}
                 height={32}

@@ -26,9 +26,13 @@ const refreshToken = async () => {
   return data.access_token;
 };
 
+export interface CustomRequestInit extends RequestInit {
+  returnHeaders?: boolean;
+}
+
 const request = async <T>(
   url: string,
-  options: RequestInit = {},
+  options: CustomRequestInit = {},
   retry = true
 ): Promise<T> => {
   const token = getToken();
@@ -66,22 +70,27 @@ const request = async <T>(
     }
   }
 
+  if (options.returnHeaders) {
+    const data = await res.json();
+    return { data, headers: res.headers } as unknown as T;
+  }
+
   return res.json();
 };
 
 export const api = {
-  get: <T = unknown>(url: string, options?: RequestInit) =>
+  get: <T = unknown>(url: string, options?: CustomRequestInit) =>
     request<T>(url, { ...options, method: "GET" }),
 
-  post: <T = unknown>(url: string, data?: unknown) =>
-    request<T>(url, { method: "POST", body: JSON.stringify(data) }),
+  post: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
+    request<T>(url, { ...options, method: "POST", body: JSON.stringify(data) }),
 
-  put: <T = unknown>(url: string, data?: unknown) =>
-    request<T>(url, { method: "PUT", body: JSON.stringify(data) }),
+  put: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
+    request<T>(url, { ...options, method: "PUT", body: JSON.stringify(data) }),
 
-  patch: <T = unknown>(url: string, data?: unknown) =>
-    request<T>(url, { method: "PATCH", body: JSON.stringify(data) }),
+  patch: <T = unknown>(url: string, data?: unknown, options?: CustomRequestInit) =>
+    request<T>(url, { ...options, method: "PATCH", body: JSON.stringify(data) }),
 
-  delete: <T = unknown>(url: string) =>
-    request<T>(url, { method: "DELETE" }),
+  delete: <T = unknown>(url: string, options?: CustomRequestInit) =>
+    request<T>(url, { ...options, method: "DELETE" }),
 }

@@ -4,10 +4,13 @@ import type { Project, ApiResponse } from '../../../types/apiTypes';
 
 const PAGE_SIZE = 10;
 
-function parseResponse(res: unknown): { data: Project[]; total: number } {
-  const data = Array.isArray(res)
-    ? (res as Project[])
-    : ((res as ApiResponse<Project[]>)?.data ?? []);
+function parseResponse(res: any): { data: Project[]; total: number } {
+  let data: Project[] = [];
+  if (res && Array.isArray(res.data)) {
+    data = res.data;
+  } else if (Array.isArray(res)) {
+    data = res;
+  }
 
   const total = (() => {
     if (res && typeof res === 'object' && 'headers' in res) {

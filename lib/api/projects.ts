@@ -14,6 +14,7 @@ export const getProjects = (limit?: number, offset?: number) => {
 
   return api.get(`/rest/v1/rpc/get_projects${query ? `?${query}` : ""}`, {
     headers: { Prefer: "count=exact" },
+    returnHeaders: true,
   });
 };
 

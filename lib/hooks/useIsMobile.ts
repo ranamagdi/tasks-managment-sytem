@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -8,7 +8,7 @@ const useIsMobile = () => {
 
     const listener = () => setIsMobile(media.matches);
 
-    listener(); 
+    listener();
     media.addEventListener("change", listener);
 
     return () => media.removeEventListener("change", listener);
@@ -17,4 +17,4 @@ const useIsMobile = () => {
   return isMobile;
 };
 
-export default useIsMobile
+export default useIsMobile;
