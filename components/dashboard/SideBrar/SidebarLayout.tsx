@@ -1,15 +1,20 @@
 "use client";
+
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import SidebarBottom from "./SidebarBottom";
+
 import { useQueryClient } from "@tanstack/react-query";
-import { useAppDispatch, useAppSelector } from "@/app/store/reduxHooks";
 import Cookies from "js-cookie";
-import Header from "@/components/common/Header/Header";
-import { logout } from "@/lib/api/auth";
+
+import SidebarBottom from "./SidebarBottom";
+
+import { useAppDispatch, useAppSelector } from "@/app/store/reduxHooks";
 import { closeSidebar, openSidebar } from "@/app/store/slices/ui/sliderSlice";
+
+import { logout } from "@/lib/api/auth";
+import useIsMobile from "@/lib/hooks/useIsMobile";
+
 import {
   ProjectsIcon,
   EpicsIcon,
@@ -23,7 +28,6 @@ import {
   ProjectsIconResponsive,
   StatisticsIcon,
 } from "./SideBarIcons";
-import useIsMobile from "@/lib/hooks/useIsMobile";
 
 type IconProps = {
   isActive?: boolean;
@@ -48,6 +52,7 @@ const getNavItems = (projectId?: string): NavItem[] => [
     icon: StatisticsIcon,
     path: "/dashboard/my-statistics",
   },
+
   ...(projectId
     ? [
         {
@@ -80,25 +85,35 @@ type Props = {
 
 export default function SidebarLayout({ children }: Props) {
   const queryClient = useQueryClient();
+
   const dispatch = useAppDispatch();
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
 
   const pathname = usePathname();
+
   const params = useParams();
+
   const projectId = params?.projectId as string | undefined;
 
   const isOpen = useAppSelector((state) => state.slider.isSidebarOpen);
+
   const isMobile = useIsMobile();
+
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  const [collapsed, setCollapsed] = useState(false);
 
   const navItems = getNavItems(projectId);
 
   const handleLogout = async () => {
     try {
       await logout();
+
       Cookies.remove("access_token");
+
       Cookies.remove("refresh_token");
+
       queryClient.clear();
+
       window.location.href = "/login";
     } catch (error) {
       console.error("Logout failed", error);
@@ -107,49 +122,43 @@ export default function SidebarLayout({ children }: Props) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Mobile overlay backdrop */}
+      {/* Mobile overlay */}
       {isMobile && isOpen && (
         <div
           onClick={() => dispatch(closeSidebar())}
-          className="fixed inset-0 bg-black/40 z-40"
+          className="fixed inset-0 z-40 bg-black/40"
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
-          h-screen
-          bg-(--color-surface-low)
-          transition-all duration-300 ease-in-out
-          flex flex-col py-4 shrink-0
-          ${
-            isMobile
-              ? `w-64 px-3 fixed top-0 left-0 z-50 ${isOpen ? "translate-x-0" : "-translate-x-full"}`
-              : `${collapsed ? "w-14 px-2 sticky top-0" : "w-52 px-3 sticky top-0"}`
-          }
-        `}
+    h-screen
+    bg-(--color-surface-low)
+    transition-all duration-300 ease-in-out
+    flex flex-col py-4
+
+    ${
+      isMobile
+        ? `w-64 px-3 fixed top-0 left-0 z-50 ${
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          }`
+        : `${
+            collapsed
+              ? "w-14 px-2 sticky top-0 h-screen"
+              : "w-52 px-3 fixed top-0 left-0 z-50"
+          }`
+    }
+  `}
       >
-        {/* Logo */}
         <div className="flex items-center gap-2.5 mb-6 pl-1">
-          {!collapsed && (
-            <>
-              <Image
-                src="/logo.svg"
-                alt="logo"
-                width={32}
-                height={32}
-                className="object-contain"
-                style={{ width: "auto", height: "auto" }}
-              />
-              <span className="logo-name">TASKLY</span>
-            </>
-          )}
+          {!collapsed && <span className="logo-name">TASKLY</span>}
         </div>
 
-        {/* Nav links */}
-        <nav className="flex flex-col gap-0.5">
+        <nav className="flex flex-col gap-1">
           {navItems.map((item) => {
-            const isActive = pathname.includes(item.path.split("/:")[0]);
+            const isActive =
+              pathname === item.path || pathname.startsWith(item.path);
+
             const IconComponent =
               isMobile && item.responsiveIcon ? item.responsiveIcon : item.icon;
 
@@ -159,13 +168,19 @@ export default function SidebarLayout({ children }: Props) {
                 href={item.path}
                 title={collapsed ? item.label : undefined}
                 className={`
-                  group relative flex items-center gap-2.5 py-2.5 px-3 rounded-sm cursor-pointer
-                  ${isActive ? "bg-white shadow-[0px_1px_2px_0px_#0000000D]" : ""}
+                  group relative flex items-center gap-2.5
+                  py-2.5 px-3 rounded-sm cursor-pointer
+                  ${
+                    isActive
+                      ? "bg-white shadow-[0px_1px_2px_0px_#0000000D]"
+                      : ""
+                  }
                 `}
               >
                 <span className="shrink-0">
                   <IconComponent isActive={isActive} />
                 </span>
+
                 {!collapsed && (
                   <span
                     className={`text-[14px] font-medium ${
@@ -181,9 +196,10 @@ export default function SidebarLayout({ children }: Props) {
         </nav>
 
         <div className="flex-1" />
+
         <hr className="mt-7 mb-3 border border-[#C3C6D6]/15" />
 
-        {/* Bottom actions */}
+        {/* Footer buttons */}
         <div className="flex flex-col gap-0.5">
           {!isMobile && (
             <button
@@ -193,6 +209,7 @@ export default function SidebarLayout({ children }: Props) {
               <span className="shrink-0">
                 {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
               </span>
+
               {!collapsed && (
                 <span className="text-[14px] font-medium">Collapse</span>
               )}
@@ -206,6 +223,7 @@ export default function SidebarLayout({ children }: Props) {
             <span className="shrink-0">
               <LogoutIcon />
             </span>
+
             {!collapsed && (
               <span className="text-[14px] font-medium text-[#BA1A1A]">
                 Logout
@@ -215,54 +233,54 @@ export default function SidebarLayout({ children }: Props) {
         </div>
       </aside>
 
-      {/* Main content area */}
       <div
         className={`
-          flex-1 flex flex-col min-w-0
-          ${isMobile ? "pb-16" : ""}
-        `}
+    flex-1 flex flex-col min-w-0
+    ${!isMobile ? (collapsed ? "ml-14" : "ml-52") : ""}
+    ${isMobile ? "pb-16" : ""}
+  `}
       >
-        {/* Mobile hamburger */}
         {isMobile && (
           <button
             onClick={() => dispatch(openSidebar())}
             className="absolute top-5 left-1 p-2 md:hidden flex items-center justify-between gap-2"
           >
             <Menu />
+
             <span className="logo-name px-2">TASKLY</span>
           </button>
         )}
 
-        <Header />
-
         {children}
       </div>
 
-      {/* Mobile bottom nav bar */}
       <SidebarBottom isMobile={isMobile} />
 
-      {/* Logout confirmation dialog */}
       {showLogoutDialog && (
         <div className="fixed inset-0 z-100 flex items-center justify-center">
           <div
             className="absolute inset-0 bg-black/40"
             onClick={() => setShowLogoutDialog(false)}
           />
-          <div className="relative bg-white rounded-lg shadow-lg w-[90%] max-w-sm p-5 z-101">
-            <h2 className="text-lg font-semibold mb-2">Confirm Logout</h2>
-            <p className="text-sm text-gray-600 mb-4">
+
+          <div className="relative z-101 w-[90%] max-w-sm rounded-lg bg-white p-5 shadow-lg">
+            <h2 className="mb-2 text-lg font-semibold">Confirm Logout</h2>
+
+            <p className="mb-4 text-sm text-gray-600">
               Are you sure you want to logout?
             </p>
+
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowLogoutDialog(false)}
-                className="px-3 py-2 text-sm rounded-md border"
+                className="rounded-md border px-3 py-2 text-sm"
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleLogout}
-                className="px-3 py-2 text-sm rounded-md bg-red-600 text-white"
+                className="rounded-md bg-red-600 px-3 py-2 text-sm text-white"
               >
                 Logout
               </button>
