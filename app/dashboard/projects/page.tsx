@@ -1,3 +1,4 @@
+import  { Suspense } from "react";
 import ProjectsPage from "./projects-client";
 
 export const metadata = {
@@ -5,5 +6,9 @@ export const metadata = {
 };
 
 export default function Projects() {
-  return <ProjectsPage />;
+  return (
+    <Suspense fallback={<div />}>
+      <ProjectsPage />
+    </Suspense>
+  );
 }
