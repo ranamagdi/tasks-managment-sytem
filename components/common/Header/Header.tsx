@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Cookies from "js-cookie";
 import { getInitials } from "../../../lib/utils/nameUtils";
@@ -6,8 +6,10 @@ import { useAppSelector } from "@/app/store/reduxHooks";
 import Image from "next/image";
 import useIsMobile from "../../../lib/hooks/useIsMobile";
 import { useUserQuery } from "../../../lib/hooks/queries/useUserQuery";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const [isHydrated, setIsHydrated] = useState(false);
   const isMobile = useIsMobile();
   const isSidebarOpen = useAppSelector((state) => state.slider.isSidebarOpen);
   const accessToken = Cookies.get("access_token");
@@ -18,8 +20,15 @@ const Header = () => {
   const showLogo =
     (!isMobile && !isSidebarOpen) ||
     (!accessToken && !isSidebarOpen && isMobile);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   return (
-    <header className={accessToken ? "border-b border-gray-200" : ""}>
+    <header
+      className={isHydrated && accessToken ? "border-b border-gray-200" : ""}
+    >
       <nav className="mx-auto flex items-center justify-between p-6">
         <div className="flex lg:flex-1">
           {showLogo && (
