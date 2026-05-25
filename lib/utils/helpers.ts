@@ -13,6 +13,7 @@ export function mergeRefs<T>(
   };
 }
 
+
 export function formatRangeLabel(range: DateRange): string {
   if (!range.start) return "Select date range";
   if (!range.end) return formatDate(range.start);

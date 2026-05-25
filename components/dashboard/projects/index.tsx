@@ -4,16 +4,16 @@ import { useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import ProjectCard from "./ProjectCard";
-import Button from "../ui/Button";
-import Pagination from "../common/Pagination/Pagination";
-import { AddIcon, ErrorIcon } from "../ui/SvgIcons";
-import EmptyContent from "../common/content/EmptyContent";
-import ErrorContent from "../common/content/ErrorContent";
-import { IMAGES } from "../../assets/index";
-import ProjectCardSkeleton from "../projects/ProjectCardSkeleton";
-import useIsMobile from "../../lib/hooks/useIsMobile";
-import { useProjects } from "../../lib/hooks/queries/useProjects";
-import { useProjectsInfinite } from "../../lib/hooks/queries/useProjectsInfinite";
+import Button from "../../ui/Button";
+import Pagination from "../../common/Pagination/Pagination";
+import { AddIcon, ErrorIcon } from "../../ui/SvgIcons";
+import EmptyContent from "../../common/content/EmptyContent";
+import ErrorContent from "../../common/content/ErrorContent";
+import { IMAGES } from "../../../assets/index";
+import ProjectCardSkeleton from "./ProjectCardSkeleton";
+import useIsMobile from "../../../lib/hooks/useIsMobile";
+import { useProjects } from "../../../lib/hooks/queries/useProjects";
+import { useProjectsInfinite } from "../../../lib/hooks/queries/useProjectsInfinite";
 
 const PAGE_SIZE = 10;
 

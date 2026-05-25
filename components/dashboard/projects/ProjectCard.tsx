@@ -1,10 +1,10 @@
-import { formatDate } from "../../lib/utils/dateUtils";
+import { formatDate } from "../../../lib/utils/dateUtils";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AddIcon, CalendarIcon, ProjectIcon,PenIcon } from "../ui/SvgIcons";
+import { AddIcon, CalendarIcon, ProjectIcon, PenIcon } from "../../ui/SvgIcons";
 import { useDispatch } from "react-redux";
-import { setProject } from "../../app/store/slices/project/projectSlice";
+import { setProject } from "../../../app/store/slices/project/projectSlice";
 
 type ProjectCardProps = {
   title?: string;
@@ -65,7 +65,7 @@ export default function ProjectCard({
 
   return (
     <Link
-        href={to || "#"}
+      href={to || "#"}
       className={`
         bg-white rounded-lg p-8 
         hover:shadow-md transition cursor-pointer

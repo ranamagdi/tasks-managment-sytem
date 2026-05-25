@@ -40,6 +40,21 @@ export const ArrowIcon = () => (
 <path d="M10.1458 7.5H0V5.83333H10.1458L5.47917 1.16667L6.66667 0L13.3333 6.66667L6.66667 13.3333L5.47917 12.1667L10.1458 7.5Z" fill="white"/>
 </svg>
 );
+export const BackArrowIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ transform: "scaleX(-1)" }}
+  >
+    <path
+      d="M10.1458 7.5H0V5.83333H10.1458L5.47917 1.16667L6.66667 0L13.3333 6.66667L6.66667 13.3333L5.47917 12.1667L10.1458 7.5Z"
+      fill="#434654"
+    />
+  </svg>
+);
 export const DotsIcon = () => (
   <svg width="3" height="13" viewBox="0 0 3 13" fill="none">
     <circle cx="1.5" cy="1.5" r="1.5" fill="#C3C6D6" />
