@@ -14,23 +14,25 @@ const AuthCallback = () => {
 
     console.log("AuthCallback running:", window.location.href);
 
-    // 1. Parse URL hash
+    const searchParams = new URLSearchParams(window.location.search);
     const hash = window.location.hash;
-    const params = new URLSearchParams(hash.replace("#", ""));
+    const hashParams = new URLSearchParams(hash.replace("#", ""));
 
-    const accessToken = params.get("access_token");
-    const type = params.get("type");
+    const accessToken =
+      hashParams.get("access_token") ||
+      searchParams.get("access_token") ||
+      searchParams.get("token");
+    const type = hashParams.get("type") || searchParams.get("type");
 
-    const error = params.get("error");
-    const errorCode = params.get("error_code");
+    const error = hashParams.get("error") || searchParams.get("error");
+    const errorCode =
+      hashParams.get("error_code") || searchParams.get("error_code");
 
-    // 2. Handle error case
     if (error || errorCode) {
       router.replace(`/reset-password?error=${errorCode || "invalid_link"}`);
       return;
     }
 
-    // 3. If token exists → save it
     if (accessToken) {
       Cookies.set("access_token", accessToken);
     }
@@ -47,7 +49,7 @@ const AuthCallback = () => {
     // 5. Recovery flow (if needed)
     if (type === "recovery" && accessToken) {
       router.replace(
-        `/reset-password?access_token=${accessToken}&type=recovery`
+        `/reset-password?access_token=${accessToken}&type=recovery`,
       );
       return;
     }
