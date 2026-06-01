@@ -13,8 +13,6 @@ import { useState } from "react";
 import { ProjectTeamIcon, ProjectTeamResponsiveIcon } from "../../ui/SvgIcons";
 import Modal from "../../common/Modal/Modal";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
-
 const newMemberSchema = z.object({
   email: z.email("Invalid email address").nonempty("Email is required"),
 });
@@ -47,11 +45,16 @@ const NewMembersPopup = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmit: SubmitHandler<MembersFormValues> = async (data) => {
     try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (!baseUrl) {
+        throw new Error("NEXT_PUBLIC_API_URL environment variable is not set");
+      }
+
       await inviteMember({
         p_email: data.email,
         p_project_id: projectId!,
         p_app_url: window.location.origin,
-        p_base_url: BASE_URL,
+        p_base_url: baseUrl,
       });
 
       setStatus({ type: "success", message: "Invitation sent!" });

@@ -2,7 +2,21 @@
 
 import Cookies from "js-cookie";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
+const getBaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  if (!url) {
+    throw new Error("NEXT_PUBLIC_API_URL environment variable is not set");
+  }
+  return url;
+};
+
+const getApiKey = () => {
+  const key = process.env.NEXT_PUBLIC_API_KEY;
+  if (!key) {
+    throw new Error("NEXT_PUBLIC_API_KEY environment variable is not set");
+  }
+  return key;
+};
 
 const getToken = () => Cookies.get("access_token");
 
@@ -10,12 +24,12 @@ const refreshToken = async () => {
   const refresh = Cookies.get("refresh_token");
 
   const res = await fetch(
-    `${BASE_URL}/auth/v1/token?grant_type=refresh_token`,
+    `${getBaseUrl()}/auth/v1/token?grant_type=refresh_token`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        apikey: process.env.NEXT_PUBLIC_API_KEY!,
+        apikey: getApiKey(),
       },
       body: JSON.stringify({ refresh_token: refresh }),
     },
@@ -51,11 +65,11 @@ const request = async <T>(
     }
   };
 
-  const res = await fetch(`${BASE_URL}${url}`, {
+  const res = await fetch(`${getBaseUrl()}${url}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      apikey: process.env.NEXT_PUBLIC_API_KEY!,
+      apikey: getApiKey(),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
@@ -66,11 +80,11 @@ const request = async <T>(
     try {
       const newToken = await refreshToken();
 
-      const retryRes = await fetch(`${BASE_URL}${url}`, {
+      const retryRes = await fetch(`${getBaseUrl()}${url}`, {
         ...options,
         headers: {
           "Content-Type": "application/json",
-          apikey: process.env.NEXT_PUBLIC_API_KEY!,
+          apikey: getApiKey(),
           Authorization: `Bearer ${newToken}`,
         },
       });
