@@ -1,3 +1,5 @@
+
+'use client';
 import type { ProjectStatItem } from "../../../types/apiTypes";
 
 type ProjectsSectionProps = {

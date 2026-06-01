@@ -1,3 +1,5 @@
+'use client';
+
 import { ListIcon, CheckIcon, DenagerIcon } from "../../ui/SvgIcons";
 
 type TotalInfoProps = {

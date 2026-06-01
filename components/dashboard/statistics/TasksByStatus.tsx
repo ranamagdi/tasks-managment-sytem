@@ -1,3 +1,4 @@
+'use client';
 import { STATUS_MAP } from "../../../lib/utils/constants";
 import type { StatusVariant } from "../../../types/apiTypes";
 
