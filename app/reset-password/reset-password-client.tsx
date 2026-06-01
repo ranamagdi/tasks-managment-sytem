@@ -1,15 +1,15 @@
 "use client";
-import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { updatePassword } from "../../../lib/api/auth";
+import { updatePassword } from "../../lib/api/auth";
 import { useState } from "react";
 import Cookies from "js-cookie";
-import useIsMobile from "../../../lib/hooks/useIsMobile";
+import useIsMobile from "../../lib/hooks/useIsMobile";
 import {
   ShowPassword,
   HidePassword,
@@ -162,7 +162,10 @@ const ResetPassword = () => {
           <button
             className="cursor-pointer mt-6 text-sm w-full"
             style={{ color: "var(--color-primary)" }}
-            onClick={() => router.push("/forgot-password")}
+            onClick={() => {
+              Cookies.remove("access_token");
+              router.push("/forgot-password");
+            }}
           >
             Request a new link
           </button>
@@ -260,7 +263,7 @@ const ResetPassword = () => {
                 <label>Confirm Password</label>
                 <Input
                   type="password"
-                  specialStyle="specialStyle"
+                  specialStyle="special-style"
                   placeholder="Repeat your password"
                   {...register("confirmPassword")}
                 />
@@ -335,7 +338,10 @@ const ResetPassword = () => {
           >
             <span
               className="text-(--color-primary) cursor-pointer "
-              onClick={() => router.push("/login")}
+              onClick={() => {
+                Cookies.remove("access_token");
+                router.push("/login");
+              }}
             >
               Back to Sign In
             </span>

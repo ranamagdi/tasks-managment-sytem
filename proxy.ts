@@ -6,7 +6,6 @@ const PUBLIC_ONLY_ROUTES = [
   "/login",
   "/sign-up",
   "/forgot-password",
-  "/reset-password",
 ];
 
 // Routes that require authentication

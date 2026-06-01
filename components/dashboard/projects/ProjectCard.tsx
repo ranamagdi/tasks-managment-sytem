@@ -84,10 +84,11 @@ export default function ProjectCard({
 
         <button
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             setOpenMenu((prev) => !prev);
           }}
-          className="p-1"
+          className="p-1 "
         >
           <ProjectIcon />
         </button>
@@ -96,13 +97,12 @@ export default function ProjectCard({
           <div className="absolute right-0 top-6 w-40 bg-white shadow-lg border border-gray-100 rounded-md z-50">
             <button
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                router.push(`/dashboard/project/${projectId}/edit`);
+                router.push(`/dashboard/projects/${projectId}/edit`);
                 setOpenMenu(false);
               }}
-              className="w-full text-left
-              
-              px-4 py-2 text-sm hover:bg-gray-50"
+              className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 * transition flex items-center gap-2"
             >
               <PenIcon />
               Edit Project

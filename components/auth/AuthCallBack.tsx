@@ -37,20 +37,20 @@ const AuthCallback = () => {
       Cookies.set("access_token", accessToken);
     }
 
-    // 4. Redirect back to original page (invite, etc.)
+    // 4. Recovery flow (if needed)
+    if (type === "recovery" && accessToken) {
+      router.replace(
+        `/reset-password?access_token=${accessToken}&type=recovery`,
+      );
+      return;
+    }
+
+    // 5. Redirect back to original page (invite, etc.)
     const redirectTo = sessionStorage.getItem("redirect_after_login");
 
     if (redirectTo) {
       sessionStorage.removeItem("redirect_after_login");
       router.replace(redirectTo);
-      return;
-    }
-
-    // 5. Recovery flow (if needed)
-    if (type === "recovery" && accessToken) {
-      router.replace(
-        `/reset-password?access_token=${accessToken}&type=recovery`,
-      );
       return;
     }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { getInitials } from "../../../lib/utils/nameUtils";
 import { useAppSelector } from "@/app/store/reduxHooks";
@@ -9,11 +10,16 @@ import { useUserQuery } from "../../../lib/hooks/queries/useUserQuery";
 
 
 const Header = () => {
- 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isMobile = useIsMobile();
   const isSidebarOpen = useAppSelector((state) => state.slider.isSidebarOpen);
   const accessToken = Cookies.get("access_token");
-const isClient = typeof window !== "undefined";
+  
   const { data: user } = useUserQuery({ enabled: Boolean(accessToken) });
 
   const initials = getInitials(user?.name);
@@ -25,7 +31,7 @@ const isClient = typeof window !== "undefined";
 
   return (
     <header
-   className={isClient && accessToken ? "border-b border-gray-200" : ""}
+   className={mounted && accessToken ? "border-b border-gray-200" : ""}
     >
       <nav className="mx-auto flex items-center justify-between p-6">
         <div className="flex lg:flex-1">

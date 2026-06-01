@@ -14,6 +14,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <Header />
             {children}
+            <div id="modal-root" />
           </ReactQueryProvider>
         </ReduxProvider>
       </body>
