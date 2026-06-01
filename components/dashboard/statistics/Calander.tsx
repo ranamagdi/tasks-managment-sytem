@@ -114,7 +114,6 @@ export default function Calendar({
             }
           }
 
-          // Combined disabled state
           const isDisabled = isPast || isOutOfRange;
 
           const isStart = range.start && isSameDay(date, range.start);
