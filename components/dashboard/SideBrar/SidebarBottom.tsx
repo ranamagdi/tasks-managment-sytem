@@ -33,22 +33,22 @@ const getNavItems = (projectId?: string): SidebarItem[] => [
         {
           label: "Project Epics",
           icon: EpicsIcon,
-          path: `/dashboard/project/${projectId}/epics`,
+          path: `/dashboard/projects/${projectId}/epics`,
         },
         {
           label: "Project Tasks",
           icon: TasksIcon,
-          path: `/dashboard/project/${projectId}/tasks`,
+          path: `/dashboard/projects/${projectId}/tasks`,
         },
         {
           label: "Project Members",
           icon: MembersIcon,
-          path: `/dashboard/project/${projectId}/members`,
+          path: `/dashboard/projects/${projectId}/members`,
         },
         {
           label: "Project Details",
           icon: DetailsIcon,
-          path: `/dashboard/project/${projectId}/edit`,
+          path: `/dashboard/projects/${projectId}/edit`,
         },
       ]
     : []),

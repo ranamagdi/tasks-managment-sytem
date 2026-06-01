@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ProjectsEditClient from "./projects-edit-client";
+import Members from "./members-client";
 import type { Metadata } from "next";
 
 type Props = {
@@ -14,14 +14,14 @@ export async function generateMetadata({
   const { projectId } = await params;
 
   return {
-    title: `Edit Project ${projectId} - Learning management system`,
+    title: `Project members ${projectId} - Learning management system`,
   };
 }
 
 export default function EditProjectPage() {
   return (
     <Suspense fallback={<div />}>
-      <ProjectsEditClient />
+      <Members />
     </Suspense>
   );
 }
