@@ -1,10 +1,12 @@
 'use client'
+
 import { useState } from "react";
+import DaysTasks from "../../../components/dashboard/Statistics/DaysTasks";
 import FilterSection from "../../../components/dashboard/Statistics/FilterSection";
 import TotalInfo from "../../../components/dashboard/Statistics/TotalInfo";
 import ProjectsSection from "../../../components/dashboard/Statistics/ProjectsSection";
 import TasksByStatus from "../../../components/dashboard/Statistics/TasksByStatus";
-import DaysTasks from "../../../components/dashboard/Statistics/DaysTasks";
+
 import type {
   CalendarStatsResponse,
   ProjectStatItem,

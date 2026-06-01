@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useState } from "react";
 import { ProTipIcon, OperationProjectIcon } from "@/components/ui/SvgIcons";
-import NewMembersPopup from "@/components/dashboard/members/NewMembersPopup";
+import NewMembersPopup from "@/components/dashboard/Members/NewMembersPopup";
 import { createProject } from "@/lib/api/projects";
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import type { ApiError } from "@/types/apiTypes";

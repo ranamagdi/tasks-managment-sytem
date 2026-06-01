@@ -8,7 +8,7 @@ import {
   InviteMembers,
   OperationProjectIcon,
 } from "@/components/ui/SvgIcons";
-import NewMembersPopup from "@/components/dashboard/members/NewMembersPopup";
+import NewMembersPopup from "@/components/dashboard/Members/NewMembersPopup";
 import { updateProject, getProject } from "@/lib/api/projects";
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import type { ApiError } from "@/types/apiTypes";

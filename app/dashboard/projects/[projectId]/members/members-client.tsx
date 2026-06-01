@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Button from "../../../../../components/ui/Button";
 import { getProjectMembers } from "../../../../../lib/api/members";
 import { InviteMembers, RoleIcon } from "../../../../../components/ui/SvgIcons";
-import NewMembersPopup from "../../../../../components/dashboard/members/NewMembersPopup";
+import NewMembersPopup from "../../../../../components/dashboard/Members/NewMembersPopup";
 import { ErrorIcon } from "../../../../../components/ui/SvgIcons";
 import { getInitials } from "../../../../../lib/utils/nameUtils";
 import type { ApiMember } from "../../../../../types/apiTypes";

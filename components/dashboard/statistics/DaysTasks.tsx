@@ -1,4 +1,4 @@
-'use client';
+
 import { NoTasks } from "../../ui/SvgIcons";
 import type { CalendarStatsResponse } from "../../../types/apiTypes";
 import { DAYS, STATUS_MAP } from "../../../lib/utils/constants";
