@@ -122,7 +122,7 @@ export default function SidebarLayout({ children }: Props) {
 
   return (
     <div className="flex min-h-screen">
-      {/* Mobile overlay */}
+   
       {isMobile && isOpen && (
         <div
           onClick={() => dispatch(closeSidebar())}
