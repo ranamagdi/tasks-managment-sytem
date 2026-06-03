@@ -1,5 +1,3 @@
-'use client';
-
 import { formatDate } from "../../../lib/utils/dateUtils";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";

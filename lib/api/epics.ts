@@ -22,7 +22,10 @@ export const getProjectEpics = (
     ? `/rest/v1/project_epics?project_id=eq.${projectId}&limit=${limit}&offset=${offset}&title=ilike.%25${searchTerm}%25`
     : `/rest/v1/project_epics?project_id=eq.${projectId}&limit=${limit}&offset=${offset}`;
 
-  return api.get(url, { headers: { Prefer: "count=exact" } });
+  return api.get(url, {
+    headers: { Prefer: "count=exact" },
+    returnHeaders: true,
+  });
 };
 
 export const getProjectEpic = (projectId: string, id?: string) => {

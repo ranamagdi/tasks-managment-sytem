@@ -65,5 +65,6 @@ export const getProjectTasks = (
     headers: {
       Prefer: "count=exact",
     },
+    returnHeaders: true,
   });
 };

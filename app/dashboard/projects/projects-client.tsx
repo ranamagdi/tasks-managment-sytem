@@ -144,7 +144,7 @@ export default function Projects() {
                 description={project.description}
                 createdAt={project.created_at}
                 projectId={project.id}
-                to={`/dashboard/project/${project.id}/epics`}
+                to={`/dashboard/projects/${project.id}/epics`}
               />
             </div>
           );

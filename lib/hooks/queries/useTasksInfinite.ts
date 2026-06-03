@@ -1,24 +1,30 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getProjectTasks } from '../../api/tasks';
-import type { Task, StatusVariant, ApiResponse } from '../../../types/apiTypes';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getProjectTasks } from "../../api/tasks";
+import type { Task, StatusVariant, ApiResponse } from "../../../types/apiTypes";
 
 const PAGE_SIZE = 10;
 
 export const useTasksInfinite = (
-  projectId: string, 
-  status?: StatusVariant, 
-  searchTerm?: string
+  projectId: string,
+  status?: StatusVariant,
+  searchTerm?: string,
 ) => {
   return useInfiniteQuery({
-    queryKey: ['tasks', 'infinite', projectId, status, searchTerm],
+    queryKey: ["tasks", "infinite", projectId, status, searchTerm],
     queryFn: async ({ pageParam = 0 }) => {
-      const res = await getProjectTasks(projectId, status, PAGE_SIZE, pageParam as number, searchTerm) as unknown as ApiResponse<Task[]>;
-      
+      const res = (await getProjectTasks(
+        projectId,
+        status,
+        PAGE_SIZE,
+        pageParam as number,
+        searchTerm,
+      )) as unknown as ApiResponse<Task[]>;
+
       const contentRange = res.headers?.get?.("content-range") ?? null;
       const total = contentRange ? parseInt(contentRange.split("/")[1], 10) : 0;
-      
-      const data = res.data;
-        
+
+      const data = Array.isArray(res) ? res : (res.data ?? []);
+
       return { data, total };
     },
     initialPageParam: 0,

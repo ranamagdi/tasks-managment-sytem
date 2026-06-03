@@ -17,7 +17,6 @@ export default function Breadcrumb() {
   const routesMap: Record<string, string> = {
     dashboard: "Dashboard",
     projects: "Projects",
-    project: "Project",
     edit: "Edit",
     epics: "Epics",
     members: "Members",
